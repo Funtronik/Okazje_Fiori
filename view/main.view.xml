@@ -1,0 +1,98 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="app.controller.main"
+    xmlns="sap.m">
+    <SplitApp id="SplitAppDemo" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+        <detailPages>
+            <Page id="detail" title="Detale" class="sapUiStdPage">
+                <content>
+                    <ObjectHeader id="idObjectHeader" binding="{/ProductDetailBasic/0}" icon="{productImageUrl}" iconDensityAware="false" iconAlt="{productFullName}" title="{productFullName}" number="" numberUnit="PLN">
+                        <statuses>
+                            <!-- <ObjectStatus text="{}" state="Error" />
+                            <ObjectStatus text="In Stock" state="Success" /> -->
+                        </statuses>
+                        <attributes>
+                            <ObjectAttribute title="Id" text="{productId}" />
+                            <ObjectAttribute title="Model/Producent" text="{productModel} x {productManufacturer}" />
+                            <ObjectAttribute title="Parametry" text="{productParameters}" />
+                        </attributes>
+                    </ObjectHeader>
+                    <Table id="idTableLinks" class="" inset="false" items="{/ProductLinks}" width="100%">
+                        <columns>
+                            <Column width="3rem">
+                                <Label text="Id"/>
+                            </Column>
+                            <Column width="8rem">
+                                <Label text="Domena"/>
+                            </Column>
+                            <Column>
+                                <Label text="Link"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier title="{linkId}"/>
+                                    <Text text="{productDomain}" />
+                                    <Text text="{productUrl}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                    <Label/>
+                    <Table id="idTablePrices" class="" inset="false" items="{/ProductPrices}" width="100%">
+                        <columns>
+                            <Column width="8rem">
+                                <Label text="Data ceny"/>
+                            </Column>
+                            <Column width="8rem">
+                                <Label text="Domena"/>
+                            </Column>
+                            <Column>
+                                <Label text="Cena w dniu" width="10rem"/>
+                            </Column>
+                            <Column>
+                                <Label text="Cena poprzednia" width="10rem"/>
+                            </Column>
+                            <Column>
+                                <Label text="Przecena %" width="6rem"/>
+                            </Column>
+                            <Column>
+                                <Label text="Przecena?" width="5rem"/>
+                            </Column>
+                            <Column>
+                                <Label text="Outlet?" width="5rem"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier title="{productPriceDate}"/>
+                                    <Text text="{productDomain}" />
+                                    <Text text="{productPriceNow}PLN" />
+                                    <Text text="{productPricePrevious}PLN" />
+                                    <Text text="{productDiscountRate}%" />
+                                    <Text text="{productDiscounted}" />
+                                    <Text text="{productOutlet}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </Page>
+        </detailPages>
+        <masterPages>
+            <Page id="master" title="Produkty" icon="sap-icon://action" class="sapUiStdPage">
+                <content>
+                    <Toolbar>
+                        <SearchField width="100%" search="onProductSearch"/>
+                    </Toolbar>
+                    <List id="idProductList" items="{/Products}" busyIndicatorDelay="500" enableBusyIndicator="true" itemPress="onItemPress">
+                        <items>
+                            <StandardListItem title="{productFullName}" description="{productId}" type="Navigation" press="onPressGoToMaster"/>
+                        </items>
+                    </List>
+                </content>
+            </Page>
+        </masterPages>
+    </SplitApp>
+</mvc:View>
