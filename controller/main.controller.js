@@ -39,6 +39,10 @@ sap.ui.define([
             oExistingModel.setProperty("/ProductDetailBasic", oDataDetails.getProperty("/ProductDetailBasic"));
             oExistingModel.setProperty("/ProductLinks", oDataLinks.getProperty("/ProductLinks"));
             oExistingModel.setProperty("/ProductPrices", oDataPrices.getProperty("/ProductPrices"));
+
+            //Price Main
+            this.getView().byId('idObjectHeader').setNumber(oDataPrices.getProperty("/ProductPrices/0/productPriceNow")+" PLN");
+
         }
     });
 });

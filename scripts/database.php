@@ -150,7 +150,9 @@ function getMaterialPrices(){
 	productDiscountRate, productDiscounted,
 	productOutlet
 	from productprices
-	WHERE productId = '{$searchId}'";
+	WHERE productId = '{$searchId}'
+	ORDER BY productPriceDate DESC
+	LIMIT 20";
 
 	$res = mysqli_query($conn,$sql);
 	 	while($row = mysqli_fetch_array($res)){

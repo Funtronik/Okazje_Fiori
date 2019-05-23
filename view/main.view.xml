@@ -1,11 +1,12 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
     xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="app.controller.main"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
     <SplitApp id="SplitAppDemo" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
         <detailPages>
             <Page id="detail" title="Detale" class="sapUiStdPage">
                 <content>
-                    <ObjectHeader id="idObjectHeader" binding="{/ProductDetailBasic/0}" icon="{productImageUrl}" iconDensityAware="false" iconAlt="{productFullName}" title="{productFullName}" number="" numberUnit="PLN">
+                    <ObjectHeader id="idObjectHeader" binding="{/ProductDetailBasic/0}" icon="{productImageUrl}" iconDensityAware="false" iconAlt="{productFullName}" title="{productFullName}" number="" numberUnit="Aktualnie">
                         <statuses>
                             <!-- <ObjectStatus text="{}" state="Error" />
                             <ObjectStatus text="In Stock" state="Success" /> -->
@@ -16,7 +17,7 @@
                             <ObjectAttribute title="Parametry" text="{productParameters}" />
                         </attributes>
                     </ObjectHeader>
-                    <Table id="idTableLinks" class="" inset="false" items="{/ProductLinks}" width="100%">
+                    <Table id="idTableLinks" class="" inset="false" items="{/ProductLinks}" width="100%" growing="true" growingThreshold="4" alternateRowColors="true">
                         <columns>
                             <Column width="3rem">
                                 <Label text="Id"/>
@@ -39,7 +40,7 @@
                         </items>
                     </Table>
                     <Label/>
-                    <Table id="idTablePrices" class="" inset="false" items="{/ProductPrices}" width="100%">
+                    <Table id="idTablePrices" class="" inset="false" items="{/ProductPrices}" width="100%" growing="true" growingThreshold="4" alternateRowColors="true">
                         <columns>
                             <Column width="8rem">
                                 <Label text="Data ceny"/>
@@ -77,6 +78,7 @@
                             </ColumnListItem>
                         </items>
                     </Table>
+                    <core:Fragment fragmentName="app.view.fragments.chart" type="XML" />
                 </content>
             </Page>
         </detailPages>
