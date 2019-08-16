@@ -72,14 +72,27 @@ function searchMaterial(){
 
 	$searchString = str_replace(" ", "%", $searchString);
 	$searchString = strtolower("%{$searchString}%");
-	$sql = "SELECT productFullName, productId
-	 FROM productdetail
-	 WHERE lower(productFullName) LIKE '{$searchString}'
-	 GROUP BY productId, productFullName
-	 ORDER BY productFullName
-	 LIMIT 40";
+	$searchStringLink = str_replace(" ", "%", $searchString);
+	$searchStringLink = strtolower("%{$searchStringLink}");
+
+	// $sql = "SELECT T0.productFullName, T0.productId
+	//  FROM productdetail AS T0
+	//  INNER JOIN product AS T1 on T0.productId = T1.productId
+	//  INNER JOIN productLinks AS T2 on T1.productId = T2.productId
+	//  WHERE T1.categoryId != '15'
+	//  AND ( T0.productFullName LIKE '{$searchString}' OR T2.productURL LIKE '{$searchString}' )
+	//  LIMIT 40";
+
+	$sql = "SELECT T0.productFullName, T0.productId
+	  FROM productdetail AS T0
+	  INNER JOIN product AS T1 on T0.productId = T1.productId
+	  INNER JOIN productLinks AS T2 on T1.productId = T2.productId
+	  WHERE T1.categoryId != '15'
+	  AND T2.productURL LIKE '{$searchString}'
+	  LIMIT 40";
 
 	 $res = mysqli_query($conn,$sql);
+		if (mysqli_num_rows($res)==0) { echo null;}
 	 	while($row = mysqli_fetch_array($res)){
  		array_push($resultMaterials,
 		 array('productFullName'=>$row[0], 'productId'=>$row[1]));
@@ -102,6 +115,7 @@ function getMaterialDetails(){
 	   WHERE T0.productId = '{$searchId}'";
 
 	 $res = mysqli_query($conn,$sql);
+	 if (mysqli_num_rows($res)==0) { echo null;}
 	 	while($row = mysqli_fetch_array($res)){
  			array_push($resultProductDetailBasic,
 		 		array(
@@ -129,6 +143,7 @@ function getMaterialLinks(){
 	WHERE productId = '{$searchId}'";
 
 	$res = mysqli_query($conn,$sql);
+	if (mysqli_num_rows($res)==0) { echo null;}
 	 	while($row = mysqli_fetch_array($res)){
  			array_push($resultProductLinks,
 		 		array(
@@ -155,6 +170,7 @@ function getMaterialPrices(){
 	LIMIT 20";
 
 	$res = mysqli_query($conn,$sql);
+	if (mysqli_num_rows($res)==0) { echo null;}
 	 	while($row = mysqli_fetch_array($res)){
  			array_push($resultProductPrices,
 		 		array(
