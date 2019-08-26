@@ -20,7 +20,7 @@ sap.ui.define([
             var oList = this.getView().byId('idProductList');
             oList.busy = true;
             var searchBarString = oEvent.getSource().getValue();
-            searchBarString = searchBarString.replace(" ","%")
+            searchBarString = searchBarString.replace(" ","%");
             var oData = models.searchProduct(searchBarString);
 
             var JSONModel = new sap.ui.model.json.JSONModel();
@@ -29,7 +29,7 @@ sap.ui.define([
             oList.busy = false;
         },
         onItemPress: function(oEvent) {
-            var oListItemId = oEvent.getParameter('listItem').mProperties.description
+            var oListItemId = oEvent.getParameter('listItem').mProperties.description;
 
             var oDataDetails = models.getProductDetail(oListItemId);
             var oDataLinks = models.getProductLinks(oListItemId);
