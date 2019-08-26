@@ -1,9 +1,9 @@
 <?php
 
 $servername = "";
-$username = "luigi";
-$password = "12345678";
-$dbname = "Okazje";
+$username = "fiori";
+$password = "raspberry";
+$dbname = "okazje";
 $resultMaterials = array();
 
 $res = null;
@@ -188,9 +188,9 @@ function getMaterialPrices(){
 	mysqli_close($conn);
 }
 
-$ip_addr = "192.168.1.80";
+$ip_addr = "192.168.137.126";
 if ((new CheckDevice())->ping($ip_addr))
-	$servername = "192.168.1.80";
+	$servername = "192.168.137.126";
 else
 	$servername = "localhost";
 // Create connection
