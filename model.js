@@ -32,7 +32,6 @@ sap.ui.define([
 		},
 		searchProduct: function(iv_searchString){
 			var json = new sap.ui.model.json.JSONModel();
-			var answer = "";
 			$.ajax({
 				type: "GET",
 				url: './scripts/database.php',
@@ -41,7 +40,6 @@ sap.ui.define([
 				success: function (data) //on recieve of reply
 				{
 					try {
-						answer = data;
 						if (data != "")
 							json.setData(JSON.parse(data));
 					} catch (e) {
@@ -54,12 +52,10 @@ sap.ui.define([
 					console.log(err);
 				}
 			});
-			console.log(answer);
 			return json;
 		},
 		getProductDetail: function(iv_id){
 			var json = new sap.ui.model.json.JSONModel();
-			var answer = "";
 			$.ajax({
 				type: "GET",
 				url: './scripts/database.php',
@@ -68,7 +64,6 @@ sap.ui.define([
 				success: function (data) //on recieve of reply
 				{
 					try {
-						answer = data;
 						if (data != "")
 							json.setData(JSON.parse(data));
 					} catch (e) {
@@ -81,12 +76,10 @@ sap.ui.define([
 					console.log(err);
 				}
 			});
-			console.log(answer);
 			return json;
 		},
 		getProductLinks: function(iv_id){
 			var json = new sap.ui.model.json.JSONModel();
-			var answer = "";
 			$.ajax({
 				type: "GET",
 				url: './scripts/database.php',
@@ -95,7 +88,6 @@ sap.ui.define([
 				success: function (data) //on recieve of reply
 				{
 					try {
-						answer = data;
 						if (data != "")
 							json.setData(JSON.parse(data));
 					} catch (e) {
@@ -108,12 +100,10 @@ sap.ui.define([
 					console.log(err);
 				}
 			});
-			console.log(answer);
 			return json;
 		},
 		getProductPrices: function(iv_id){
 			var json = new sap.ui.model.json.JSONModel();
-			var answer = "";
 			$.ajax({
 				type: "GET",
 				url: './scripts/database.php',
@@ -122,7 +112,6 @@ sap.ui.define([
 				success: function (data) //on recieve of reply
 				{
 					try {
-						answer = data;
 						if (data != "")
 							json.setData(JSON.parse(data));
 					} catch (e) {
@@ -135,7 +124,6 @@ sap.ui.define([
 					console.log(err);
 				}
 			});
-			console.log(answer);
 			return json;
 		}
 	};

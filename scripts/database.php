@@ -12,6 +12,9 @@ $conn = null;
 $date = date("Y-m-d");
 $operationType = "";
 
+$ip_addr = array();
+$ip_addr = ["192.168.137.151", "192.168.137.231", "192.168.1.83"];
+
 //Material search string
 $searchString = "";
 $resultSearchMaterial = array();
@@ -32,12 +35,12 @@ class CheckDevice {
 			return true;
 		return false;
 	}
-	public function ping($ip_addr){
+	public function ping($ip){
 		if ($this->myOS()){
-			if (!exec("ping -n 1 -w 1 ".$ip_addr." 2>NUL > NUL && (echo 0) || (echo 1)"))
+			if (!exec("ping -n 1 -w 1 ".$ip." 2>NUL > NUL && (echo 0) || (echo 1)"))
 				return true;
 		} else {
-			if (!exec("ping -q -c1 ".$ip_addr." >/dev/null 2>&1 ; echo $?"))
+			if (!exec("ping -q -c1 ".$ip." >/dev/null 2>&1 ; echo $?"))
 				return true;
 		}
 		return false;
@@ -86,9 +89,10 @@ function searchMaterial(){
 	$sql = "SELECT T0.productFullName, T0.productId
 	  FROM productdetail AS T0
 	  INNER JOIN product AS T1 on T0.productId = T1.productId
-	  INNER JOIN productLinks AS T2 on T1.productId = T2.productId
+	  INNER JOIN productlinks AS T2 on T1.productId = T2.productId
 	  WHERE T1.categoryId != '15'
-	  AND T2.productURL LIKE '{$searchString}'
+	  AND (T2.productURL LIKE '{$searchString}' 
+	  OR T0.productFullName LIKE '{$searchString}')
 	  LIMIT 40";
 
 	 $res = mysqli_query($conn,$sql);
@@ -136,9 +140,9 @@ function getMaterialDetails(){
 	 mysqli_close($conn);
 }
 function getMaterialLinks(){
-	global $resultProductLinks, $searchId, $sql, $res, $conn, $date;
+	global $resultProductLinks, $searchId, $sql, $res, $conn, $date, $ip_addr;
 
-	$sql = "SELECT productId, productUrl, productDomain, linkId
+	$sql = "SELECT productId, productUrl, productDomain, linkId, linkActive
 	from productlinks
 	WHERE productId = '{$searchId}'";
 
@@ -150,10 +154,10 @@ function getMaterialLinks(){
 			 		'productId'=>$row[0],
 			 		'productUrl'=>$row[1],
 			 		'productDomain'=>$row[2],
-			 		'linkId'=>$row[3]
+					'linkId'=>$row[3],
+					'linkActive'=>$row[4]
 			));
 		}
-
 	clearSQL();
 	mysqli_close($conn);
 }
@@ -183,18 +187,24 @@ function getMaterialPrices(){
 					'productOutlet'=>$row[6]
 			));
 		}
-
 	clearSQL();
 	mysqli_close($conn);
 }
 
-$ip_addr = "192.168.137.126";
-if ((new CheckDevice())->ping($ip_addr))
-	$servername = "192.168.137.126";
-else
-	$servername = "localhost";
+$available_addres = "";
+foreach ($ip_addr as $single_addr) {
+	$success = (new CheckDevice())->ping($single_addr);
+	if ($success){
+		$available_addres = $single_addr;
+		break;
+	}
+}
+if ($available_addres == ""){
+		echo "No connection available";
+			return;
+}
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($available_addres, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);

@@ -1,15 +1,16 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc"
-    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="app.controller.main"
-    xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="app.controller.main" 
+    xmlns="sap.m" 
+    xmlns:f="sap.f" 
+    xmlns:u="sap.ui.unified" 
+    xmlns:core="sap.ui.core" displayBlock="true">
     <SplitApp id="SplitAppDemo" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
         <detailPages>
             <Page id="detail" title="Detale" class="sapUiStdPage">
                 <content>
-                    <ObjectHeader id="idObjectHeader" binding="{/ProductDetailBasic/0}" icon="{productImageUrl}" iconDensityAware="false" iconAlt="{productFullName}" title="{productFullName}" number="" numberUnit="Aktualnie">
+                    <ObjectHeader id="idObjectHeader" binding="{/ProductDetailBasic/0}" icon="{productImageUrl}" iconDensityAware="false" iconAlt="{productFullName}" title="{productFullName}" number="-" numberUnit="Aktualnie">
                         <statuses>
-                            <!-- <ObjectStatus text="{}" state="Error" />
-                            <ObjectStatus text="In Stock" state="Success" /> -->
+
                         </statuses>
                         <attributes>
                             <ObjectAttribute title="Id" text="{productId}" />
@@ -19,14 +20,17 @@
                     </ObjectHeader>
                     <Table id="idTableLinks" class="" inset="false" items="{/ProductLinks}" width="100%" growing="true" growingThreshold="4" alternateRowColors="true">
                         <columns>
-                            <Column width="3rem">
+                            <Column width="5%" hAlign="Center">
                                 <Label text="Id"/>
                             </Column>
-                            <Column width="8rem">
+                            <Column width="20%" hAlign="Center">
                                 <Label text="Domena"/>
                             </Column>
-                            <Column>
+                            <Column width="50%" >
                                 <Label text="Link"/>
+                            </Column>
+                            <Column width="10%" hAlign="Center">
+                                <Label text="Status"/>
                             </Column>
                         </columns>
                         <items>
@@ -35,6 +39,11 @@
                                     <ObjectIdentifier title="{linkId}"/>
                                     <Text text="{productDomain}" />
                                     <Text text="{productUrl}" />
+                                    <ObjectStatus class="sapUiSmallMarginBottom" 
+                                        text="{= ${linkActive} ? 'Active' : 'Inactive'}" 
+                                        state="{= ${linkActive} ? 'Success' : 'Error'}"
+                                        icon="{= ${linkActive} ? 'sap-icon://status-positive' : 'sap-icon://status-negative'} "
+                                        inverted="true"/>
                                 </cells>
                             </ColumnListItem>
                         </items>

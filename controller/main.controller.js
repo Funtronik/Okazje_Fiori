@@ -16,24 +16,24 @@ sap.ui.define([
             JSONModel.setProperty("/Products", Products);
             this.getView().setModel(JSONModel);
         },
-        onProductSearch: function(oEvent){
-            var oList = this.getView().byId('idProductList');
-            oList.busy = true;
+        onProductSearch: async function(oEvent){
+            this.getView().byId('master').setBusy(true);
             var searchBarString = oEvent.getSource().getValue();
             searchBarString = searchBarString.replace(" ","%");
-            var oData = models.searchProduct(searchBarString);
+            var oData = await this.callModel('searchProduct',searchBarString);
 
             var JSONModel = new sap.ui.model.json.JSONModel();
             JSONModel.setProperty("/Products", oData.getProperty("/Products"));
             this.getView().setModel(JSONModel);
-            oList.busy = false;
+            this.getView().byId('master').setBusy(false);
         },
-        onItemPress: function(oEvent) {
+        onItemPress: async function(oEvent) {
+            this.getView().byId('detail').setBusy(true); 
             var oListItemId = oEvent.getParameter('listItem').mProperties.description;
 
-            var oDataDetails = models.getProductDetail(oListItemId);
-            var oDataLinks = models.getProductLinks(oListItemId);
-            var oDataPrices = models.getProductPrices(oListItemId);
+            var oDataDetails = await this.callModel('getProductDetail',oListItemId);
+            var oDataLinks = await this.callModel('getProductLinks',oListItemId);
+            var oDataPrices = await this.callModel('getProductPrices',oListItemId);
 
             var oExistingModel = this.getView().getModel();
             oExistingModel.setProperty("/ProductDetailBasic", oDataDetails.getProperty("/ProductDetailBasic"));
@@ -42,7 +42,27 @@ sap.ui.define([
 
             //Price Main
             this.getView().byId('idObjectHeader').setNumber(oDataPrices.getProperty("/ProductPrices/0/productPriceNow")+" PLN");
-
+            this.getView().byId('detail').setBusy(false);
+        },
+        callModel: function(methodName, parameter){
+            var returnVal;
+            switch (methodName) {
+                case 'getProductDetail':
+                    returnVal = models.getProductDetail(parameter);
+                    break;
+                case 'getProductLinks':
+                    returnVal = models.getProductLinks(parameter);
+                    break;
+                case 'getProductPrices':
+                    returnVal = models.getProductPrices(parameter);
+                    break;
+                case 'searchProduct':
+                    returnVal = models.searchProduct(parameter);
+                    break;
+                default:
+                    break;
+            }
+            return returnVal;
         }
     });
 });
